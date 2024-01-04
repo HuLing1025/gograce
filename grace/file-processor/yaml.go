@@ -18,7 +18,6 @@ type IYamlFileProcessor interface {
 
 // YamlFileProcessor YAML file processor
 type YamlFileProcessor struct {
-	IYamlFileProcessor
 }
 
 // StubLevel stub level type

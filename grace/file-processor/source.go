@@ -17,7 +17,6 @@ type ISourceCodeProcessor interface {
 
 // SourceCodeProcessor source code processor.
 type SourceCodeProcessor struct {
-	ISourceCodeProcessor
 }
 
 // FileType file type
@@ -28,8 +27,8 @@ const (
 	FileUnknown FileType = iota
 	// Directory directory
 	Directory
-	// FileGo go file
-	FileGo
+	// SourceFile go file
+	SourceFile
 )
 
 // ASTNode AST node
@@ -102,7 +101,7 @@ func dfs(rootPath string, astTree *ASTNode, fSet *token.FileSet) (err error) {
 				return
 			}
 
-			astTree.Children = append(astTree.Children, &ASTNode{FType: FileGo, FileName: file.Name(), RelativePath: rootPath + "/" + file.Name(), AST: f})
+			astTree.Children = append(astTree.Children, &ASTNode{FType: SourceFile, FileName: file.Name(), RelativePath: rootPath + "/" + file.Name(), AST: f})
 		}
 	}
 
