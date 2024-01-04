@@ -12,3 +12,6 @@ go install github.com/spf13/cobra-cli@latest
 - `report` 直接生成测试报告
 - `start` 启动WebUI
 - `clean` 清理项目中生成的测试中间文件`.FILE_NAME_test.go`
+
+---
+[HOME](../README.md)
