@@ -101,7 +101,7 @@ func dfs(rootPath string, astTree *ASTNode, fSet *token.FileSet) (err error) {
 				return
 			}
 
-			astTree.Children = append(astTree.Children, &ASTNode{FType: SourceFile, FileName: file.Name(), RelativePath: rootPath + "/" + file.Name(), AST: f})
+			astTree.Children = append(astTree.Children, &ASTNode{FType: SourceFile, FileName: file.Name(), RelativePath: rootPath, AST: f})
 		}
 	}
 

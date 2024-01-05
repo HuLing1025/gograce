@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"main/web/server/internal/api"
 	"net/http"
 	"os"
 	"os/signal"
@@ -16,9 +17,16 @@ import (
 // NewServer create server.
 func NewServer() *gin.Engine {
 	engine := gin.New()
-	engine.Static("", "./web/client/")
+	engine.Static("/grace", "./web/client/")
 
-	// engine.GET("grace")
+	engine.GET("", func(c *gin.Context) {
+		c.Redirect(302, "http://localhost:8080/grace")
+	})
+
+	v1 := engine.Group("/v1")
+	{
+		v1.GET("tree", api.GetTree)
+	}
 
 	return engine
 }
@@ -47,14 +55,14 @@ func shutdown(httpSrv *http.Server) {
 	signal.Notify(sigs, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 	select {
 	case sig := <-sigs:
-		fmt.Printf(fmt.Sprintf("捕获信号signal.Notify,sigs:%v", sig))
-		ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+		fmt.Println(fmt.Sprintf("catch signal.Notify,sigs:%v", sig))
+		ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 		defer cancel()
 		if err := httpSrv.Shutdown(ctx); err != nil {
-			fmt.Printf(fmt.Sprintf("捕获信号signal.shutdown,err::%v", err))
+			fmt.Println(fmt.Sprintf("catch signal.shutdown,err::%v", err))
 		}
-		fmt.Printf("gograce shutdown...")
+		fmt.Println("gograce shutdown...")
 	}
 
-	time.Sleep(3 * time.Second)
+	time.Sleep(2 * time.Second)
 }
