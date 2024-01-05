@@ -85,14 +85,14 @@ func TestCreateConfigFile(t *testing.T) {
 		return
 	}
 
-	err = NewYamlFileProcessor().CreateConfigFile(yamlContent)
+	err = NewYamlFileProcessor().CreateYamlFile("GRACE.yaml", yamlContent)
 	if err != nil {
 		t.Error(err)
 	}
 }
 
 func TestAnalysisConfig(t *testing.T) {
-	config, err := NewYamlFileProcessor().AnalysisConfig()
+	config, err := NewYamlFileProcessor().ReadYaml("GRACE.yaml")
 	data, _ := json.Marshal(config)
 	fmt.Println(string(data))
 	if err != nil {

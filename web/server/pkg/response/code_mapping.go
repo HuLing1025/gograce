@@ -7,10 +7,12 @@ import (
 // httpCode response code mapping.
 var httpCode = map[string]int{
 	// System error code.
+	BindingError: 400,
 
 	// Customer error code mapping.
-	BuildASTError:  10001,
-	SearchASTError: 10002,
+	BuildASTError:       10001,
+	SearchASTError:      10002,
+	ReadYAMLConfigError: 10003,
 
 	// TODO more customer code mapping definitions...
 }
