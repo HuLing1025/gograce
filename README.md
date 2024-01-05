@@ -29,45 +29,9 @@
 - [ ] 变量/函数打桩(暂时不支持Mock)
 - [ ] 测试结果展示与导出
 
-### Json Demo
-- Function Tree
-  ```json
-    {
-        "code": 0,
-        "data": [
-            {
-                "directory": "./",
-                "files": [
-                    {
-                        "name": "main.go",
-                        "functions": [
-                            "main"
-                        ],
-                        "methods": []
-                    }
-                ]
-            },
-            {
-                "directory": "./grace/reporter",
-                "files": [
-                    {
-                        "name": "reporter.go",
-                        "functions": [
-                            "NewReporter"
-                        ],
-                        "methods": [
-                            {
-                                "strcut": "Repoter",
-                                "name": "CreateReport"
-                            }
-                        ]
-                    }
-                ]
-            }
-        ],
-        "msg": "success"
-    }
-  ```
+### APIs
+- Refer to - [APIs](./doc/API.md)
+  
 
 ### Provided Commands
 - Refer to - [Commands](./cmd/README.md)
