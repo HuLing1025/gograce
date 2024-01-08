@@ -27,7 +27,7 @@ func NewHomeService() IHomeService {
 
 // GetTree get tree.
 func (s *HomeService) GetTree() (directories []dto.Directory, err errpkg.IError) {
-	root, _err := s.fProcessor.BuildASTTree(".")
+	root, _err := s.fProcessor.GetASTTree(".")
 	if _err != nil {
 		err = errpkg.NewHighErrorWithCause(_err, response.BuildASTError)
 		return

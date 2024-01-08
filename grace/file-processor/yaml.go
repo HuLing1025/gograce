@@ -3,12 +3,14 @@ package fileprocessor
 import (
 	"fmt"
 	"os"
+
+	"gopkg.in/yaml.v2"
 )
 
 // IYamlFileProcessor YAML file processor export interfaces.
 type IYamlFileProcessor interface {
-	CreateYamlFile(filePath string, configs []byte) error
-	ReadYaml(filePath string) ([]byte, error)
+	CreateYamlFile(filePath string, input any) error
+	ReadYaml(filePath string, output any) error
 }
 
 // YamlFileProcessor YAML file processor
@@ -21,7 +23,13 @@ func NewYamlFileProcessor() IYamlFileProcessor {
 }
 
 // CreateYamlFile create YAML config file.
-func (c *YamlFileProcessor) CreateYamlFile(filePath string, configs []byte) (err error) {
+func (c *YamlFileProcessor) CreateYamlFile(filePath string, input any) (err error) {
+	configs, _err := yaml.Marshal(input)
+	if _err != nil {
+		err = _err
+		return
+	}
+
 	yamlFile, err := os.Create(filePath)
 	if err != nil {
 		fmt.Println(err)
@@ -39,6 +47,15 @@ func (c *YamlFileProcessor) CreateYamlFile(filePath string, configs []byte) (err
 }
 
 // ReadYaml read yaml file.
-func (c *YamlFileProcessor) ReadYaml(filePath string) ([]byte, error) {
-	return os.ReadFile(filePath)
+func (c *YamlFileProcessor) ReadYaml(filePath string, output any) error {
+	configByte, err := os.ReadFile(filePath)
+	if err != nil {
+		return err
+	}
+
+	if err := yaml.Unmarshal(configByte, output); err != nil {
+		return err
+	}
+
+	return nil
 }
