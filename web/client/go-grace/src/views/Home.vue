@@ -18,41 +18,70 @@ import { get, post } from "../utils/axios"
 
 const treeData = ref([])
 
+const initOptions = (list) => {
+	return list.map((item) => {
+		let children = undefined
+		let functions = undefined
+		let methods = undefined
+
+		if (item.functions && item.functions.length) {
+			functions = item.functions.map((item) => item.name)
+		}
+
+		if (item.methods && item.methods.length) {
+			methods = item.methods.map((item) => item.struct + item.name)
+		}
+
+		if (item.files && item.files.length) {
+			children = initOptions(item.files)
+		}
+
+		return {
+			title: item.directory || item.name,
+			key: item.directory || item.name,
+			children,
+			functions,
+			methods
+		}
+	})
+}
+
 get("/api/v1/tree").then((response) => {
 	if (response.code === 200) {
-		treeData.value = response.data.map((item1) => {
-			let children = undefined
+		treeData.value = initOptions(response.data)
 
-			if (item1.files && item1.files.length) {
-				children = item1.files.map((item) => {
-					let functions = undefined
-					let methods = undefined
+		// response.data.map((item1) => {
+		// 	let children = undefined
 
-					if (item.functions && item.functions.length) {
-						functions = item.functions.map((item) => item.name)
-					}
+		// 	if (item1.files && item1.files.length) {
+		// 		children = item1.files.map((item) => {
+		// 			let functions = undefined
+		// 			let methods = undefined
 
-					if (item.methods && item.methods.length) {
-						methods = item.methods.map((item) => item.struct + item.name)
-					}
+		// 			if (item.functions && item.functions.length) {
+		// 				functions = item.functions.map((item) => item.name)
+		// 			}
 
-					return {
-						title: item.name,
-						key: item.name,
-						functions,
-						methods
-					}
-				})
-			}
+		// 			if (item.methods && item.methods.length) {
+		// 				methods = item.methods.map((item) => item.struct + item.name)
+		// 			}
 
-			return {
-				title: item1.directory,
-				key: item1.directory,
-				children
-			}
-		})
+		// 			return {
+		// 				title: item.name,
+		// 				key: item.name,
+		// 				functions,
+		// 				methods
+		// 			}
+		// 		})
+		// 	}
+
+		// 	return {
+		// 		title: item1.directory,
+		// 		key: item1.directory,
+		// 		children
+		// 	}
+		// })
 	}
-
 
 	console.log(treeData.value)
 	// for (var i = 0; i < response.data.length; i++) {
