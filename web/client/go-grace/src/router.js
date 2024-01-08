@@ -3,7 +3,10 @@
 // createWebHashHistory方法用于指定路由的工作模式（hash模式）
 import { createRouter, createWebHashHistory } from 'vue-router'
 // 2 导入需要使用路由控制的组件
-import Home from './Home.vue'
+
+const route = [
+  { path: '/', component: () => import('@/views/Home.vue') },
+]
 
 // 3 创建路由对象
 const router = createRouter({
@@ -11,9 +14,7 @@ const router = createRouter({
   history: createWebHashHistory(),
   // 3.2 通过 routes 数组，指定路由规则
   // path 是 hash 地址，component 是要展示的组件
-  routes: [
-    { path: '/', component: Home },
-  ],
+  routes: route,
 })
 
     // 4、向外共享路由对象
