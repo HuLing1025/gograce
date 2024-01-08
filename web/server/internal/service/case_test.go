@@ -1,9 +1,9 @@
 package service
 
 import (
-	"encoding/json"
 	fileprocessor "main/grace/file-processor"
 	"main/web/server/internal/service/dto"
+	"os"
 	"testing"
 )
 
@@ -49,12 +49,13 @@ func TestGetCases(t *testing.T) {
 		},
 	}
 
-	testConfigs, _ := json.Marshal(configs)
-	_ = fileprocessor.NewYamlFileProcessor().CreateYamlFile("./GRACE.yaml", testConfigs)
+	_ = fileprocessor.NewYamlFileProcessor().CreateYamlFile("./GRACE.yaml", configs)
 
 	_, err := NewCaseService().GetTestCases()
 	if err != nil {
 		t.Error(err)
 	}
+
+	_ = os.Remove("./GRACE.yaml")
 
 }

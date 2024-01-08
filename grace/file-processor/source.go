@@ -4,15 +4,16 @@ import (
 	"fmt"
 	"go/ast"
 	"go/parser"
+	"go/printer"
 	"go/token"
-	"io/fs"
 	"os"
 	"strings"
 )
 
 // ISourceCodeProcessor the processor of source code.
 type ISourceCodeProcessor interface {
-	BuildASTTree(rootPath string) (root *ASTNode, err error)
+	GetASTTree(rootPath string) (root *ASTNode, err error)
+	GenerateSourceFile(node *ASTNode) (err error)
 }
 
 // SourceCodeProcessor source code processor.
@@ -45,8 +46,8 @@ func NewSourceCodeProcessor() ISourceCodeProcessor {
 	return &SourceCodeProcessor{}
 }
 
-// BuildASTTree build AST tree.
-func (s *SourceCodeProcessor) BuildASTTree(rootPath string) (root *ASTNode, err error) {
+// GetASTTree build AST tree.
+func (s *SourceCodeProcessor) GetASTTree(rootPath string) (root *ASTNode, err error) {
 	root = &ASTNode{FType: Directory, RelativePath: rootPath}
 
 	// create a file set.
@@ -61,10 +62,20 @@ func (s *SourceCodeProcessor) BuildASTTree(rootPath string) (root *ASTNode, err 
 	return
 }
 
-// FileInfo file info
-type FileInfo struct {
-	fs.DirEntry
-	Path string
+// GenerateSourceFile generate source file.
+func (s *SourceCodeProcessor) GenerateSourceFile(node *ASTNode) (err error) {
+	file, _err := os.Create(node.RelativePath + "/" + node.FileName)
+	if _err != nil {
+		return _err
+	}
+	defer file.Close()
+
+	fset := token.NewFileSet()
+	fset.AddFile(node.FileName, fset.Base(), 0)
+
+	err = printer.Fprint(file, fset, node.AST)
+
+	return
 }
 
 // dfs search all go source files.

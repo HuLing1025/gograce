@@ -1,7 +1,6 @@
 package service
 
 import (
-	"encoding/json"
 	fileprocessor "main/grace/file-processor"
 	"main/web/server/internal/service/dto"
 	"main/web/server/pkg/errpkg"
@@ -30,18 +29,12 @@ const testCaseYamlPath = "./GRACE.yaml"
 
 // GetTestCases get test cases.
 func (s *CaseService) GetTestCases() (cases dto.CaseResponse, err errpkg.IError) {
-	configs, _err := s.yProcessor.ReadYaml(testCaseYamlPath)
+	var testConfigs []dto.TestCaseConfig
+	_err := s.yProcessor.ReadYaml(testCaseYamlPath, &testConfigs)
 	if _err != nil {
 		err = errpkg.NewMiddleErrorWithCause(_err, response.ReadYAMLConfigError)
 		return
 	}
 
-	var testConfigs []dto.TestCaseConfig
-	if _err = json.Unmarshal(configs, &testConfigs); _err != nil {
-		err = errpkg.NewMiddleErrorWithCause(_err, response.JSONError)
-		return
-	}
-
 	return
-
 }
