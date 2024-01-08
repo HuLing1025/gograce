@@ -21,11 +21,15 @@ axios.interceptors.response.use(response => {
 })
 
 const get = (url, params) => {
-  return axios.get(url, { params: params })
+  return axios.get(url, { params: params }).then(res => {
+    return res.data
+  })
 }
 
 const post = (url, data) => {
-  return axios.post(url, data)
+  return axios.post(url, data).then(res => {
+    return res.data
+  })
 }
 
 export {
