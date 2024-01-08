@@ -5,6 +5,8 @@ const (
 	BindingError = "binding error"
 	JSONError    = "json error"
 
+	ReadYAMLConfigError = "read yaml config error"
+
 // TODO more system error definitions...
 )
 
@@ -12,8 +14,6 @@ const (
 const (
 	BuildASTError  = "build ast fail"
 	SearchASTError = "search ast error"
-
-	ReadYAMLConfigError = "read yaml config error"
 
 // TODO more customer error definitions...
 )
