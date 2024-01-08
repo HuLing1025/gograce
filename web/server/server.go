@@ -17,7 +17,7 @@ import (
 // NewServer create server.
 func NewServer() *gin.Engine {
 	engine := gin.New()
-	engine.Static("/grace", "./web/client/")
+	engine.Static("/grace", "./web/client/go-grace/dist")
 
 	engine.GET("", func(c *gin.Context) {
 		c.Redirect(302, "http://localhost:8080/grace")
