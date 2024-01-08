@@ -46,7 +46,7 @@ const initOptions = (list) => {
 	})
 }
 
-get("/api/v1/tree").then((response) => {
+get("/v1/tree").then((response) => {
 	if (response.code === 200) {
 		treeData.value = initOptions(response.data)
 
