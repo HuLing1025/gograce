@@ -17,6 +17,8 @@ import (
 // NewServer create server.
 func NewServer() *gin.Engine {
 	engine := gin.New()
+	engine.Use(cors())
+
 	engine.Static("/grace", "./web/client/go-grace/dist")
 
 	engine.GET("", func(c *gin.Context) {
@@ -65,4 +67,25 @@ func shutdown(httpSrv *http.Server) {
 	}
 
 	time.Sleep(2 * time.Second)
+}
+
+// cors 跨域配置
+func cors() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		method := c.Request.Method
+		c.Header("Access-Control-Allow-Origin", "*")
+		//c.Header("Access-Control-Allow-Headers", "*")
+		c.Header("Access-Control-Allow-Headers", "*,content-type,x-token")
+		c.Header("Access-Control-Expose-Headers", "*")
+		c.Header("Access-Control-Allow-Methods", "*")
+		c.Header("Access-Control-Allow-Credentials", "true")
+		c.Header("Access-Control-Max-Age", "86400")
+		//放行索引options
+		if method == "OPTIONS" {
+			c.AbortWithStatus(http.StatusOK)
+			return
+		}
+		//处理请求
+		c.Next()
+	}
 }
