@@ -54,7 +54,8 @@ func (s *CaseService) GetTestCases(request dto.CaseRequest) (cases dto.CaseRespo
 		err = errpkg.NewMiddleErrorWithCause(_err, response.SearchASTError)
 		return
 	}
-	cases.BaseInfo.Statement = statement
+
+	cases.BaseInfo.Statement = indentCode(statement)
 
 	var testConfigs []dto.TestCaseConfig
 	_err = s.yProcessor.ReadYaml(testCaseYamlPath, &testConfigs)
@@ -137,4 +138,33 @@ func (s *CaseService) getDecl(request dto.CaseRequest) (ast.Decl, error) {
 		return decl, nil
 	}
 	return nil, errors.New("not found")
+}
+
+// indentCode indent code.
+func indentCode(statement string) string {
+	var identNum = 0
+	var result string
+	var inStr bool
+	for index := range statement {
+		result += string(statement[index])
+		// skip string.
+		if statement[index] == '"' {
+			inStr = !inStr
+			continue
+		}
+
+		if statement[index] == '\n' {
+			if index-1 >= 0 && statement[index-1] == '{' {
+				identNum++
+			}
+			if index+1 < len(statement) && statement[index+1] == '}' {
+				identNum--
+			}
+			for i := 0; i < identNum; i++ {
+				result += "\t"
+			}
+		}
+	}
+
+	return result
 }
