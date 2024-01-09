@@ -147,12 +147,16 @@ func indentCode(statement string) string {
 	var inStr bool
 	for index := range statement {
 		result += string(statement[index])
+
 		// skip string.
-		if statement[index] == '"' {
+		if inStr && statement[index] != '"' {
+			continue
+		} else if statement[index] == '"' {
 			inStr = !inStr
 			continue
 		}
 
+		// add '\t' to the statement.
 		if statement[index] == '\n' {
 			if index-1 >= 0 && statement[index-1] == '{' {
 				identNum++
