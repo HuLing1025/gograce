@@ -12,8 +12,11 @@ const (
 
 // customer errors.
 const (
-	BuildASTError  = "build ast fail"
-	SearchASTError = "search ast error"
+	BuildASTError       = "build ast fail"
+	SearchASTError      = "search ast error"
+	SearchFunctionError = "search function error"
+	SearchMethodError   = "search method error"
+	StatementError      = "statement error"
 
 // TODO more customer error definitions...
 )

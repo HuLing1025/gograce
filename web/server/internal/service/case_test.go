@@ -11,7 +11,7 @@ func TestGetCases(t *testing.T) {
 	var configs = []dto.TestCaseConfig{
 		{
 			Path:     ".",
-			FileName: "main.go",
+			FileName: "tree.go",
 			VarStubList: []dto.VarStub{
 				{
 					Name:  "systemConfig",
@@ -20,15 +20,15 @@ func TestGetCases(t *testing.T) {
 			},
 			FuncStubList: []dto.FuncStub{
 				{
-					StructName: "Processor",
-					Name:       "CreateFile",
+					StructName: "HomeService",
+					Name:       "GetTree",
 					Statement:  "{\n\treturn true\n}",
 				},
 			},
 			FunctionConfigs: []dto.FuncConfig{
 				{
-					StructName: "Processor",
-					Name:       "CreateFile",
+					StructName: "HomeService",
+					Name:       "GetTree",
 					Cases: []dto.Case{
 						{
 							Desc: "Test case 001",
@@ -51,7 +51,13 @@ func TestGetCases(t *testing.T) {
 
 	_ = fileprocessor.NewYamlFileProcessor().CreateYamlFile("./GRACE.yaml", configs)
 
-	_, err := NewCaseService().GetTestCases()
+	var request = dto.CaseRequest{
+		Path:       ".",
+		FileName:   "tree.go",
+		StructName: "HomeService",
+		FuncName:   "GetTree",
+	}
+	_, err := NewCaseService().GetTestCases(request)
 	if err != nil {
 		t.Error(err)
 	}

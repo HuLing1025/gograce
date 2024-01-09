@@ -1,166 +1,33 @@
-FILE_CONFIGS:
-- IGNORED: false
-  NAME: file_processor.go
-  PATH: ./file_processor.go
-  PACKAGE: fileprocessor
-  FUN_CONFIGS:
-  - IGNORED: false
-    NAME: NewSourceCodeProcessor
-    TEST_CASES: []
-    STUBS: []
-  - IGNORED: false
-    NAME: BuildASTTree
-    TEST_CASES: []
-    STUBS: []
-  - IGNORED: false
-    NAME: dfs
-    TEST_CASES: []
-    STUBS: []
-  METHOD_CONFIGS:
-  - FUN_CONFIG:
-      IGNORED: false
-      NAME: ""
-      TEST_CASES: []
-      STUBS: []
-    STRUCT_NAME: ""
-    PACKAGE: fileprocessor
-  - FUN_CONFIG:
-      IGNORED: false
-      NAME: ""
-      TEST_CASES: []
-      STUBS: []
-    STRUCT_NAME: ""
-    PACKAGE: fileprocessor
-  - FUN_CONFIG:
-      IGNORED: false
-      NAME: ""
-      TEST_CASES: []
-      STUBS: []
-    STRUCT_NAME: ""
-    PACKAGE: fileprocessor
-  - FUN_CONFIG:
-      IGNORED: false
-      NAME: ""
-      TEST_CASES: []
-      STUBS: []
-    STRUCT_NAME: ""
-    PACKAGE: fileprocessor
-  - FUN_CONFIG:
-      IGNORED: false
-      NAME: ""
-      TEST_CASES: []
-      STUBS: []
-    STRUCT_NAME: ""
-    PACKAGE: fileprocessor
-  - FUN_CONFIG:
-      IGNORED: false
-      NAME: FType.ASTNode
-      TEST_CASES: []
-      STUBS: []
-    STRUCT_NAME: FType.ASTNode
-    PACKAGE: fileprocessor
-  - FUN_CONFIG:
-      IGNORED: false
-      NAME: ""
-      TEST_CASES: []
-      STUBS: []
-    STRUCT_NAME: ""
-    PACKAGE: fileprocessor
-- IGNORED: false
-  NAME: yaml_processor.go
-  PATH: ./yaml_processor.go
-  PACKAGE: fileprocessor
-  FUN_CONFIGS:
-  - IGNORED: false
-    NAME: NewYamlFileProcessor
-    TEST_CASES: []
-    STUBS: []
-  - IGNORED: false
-    NAME: CreateConfigFile
-    TEST_CASES: []
-    STUBS: []
-  METHOD_CONFIGS:
-  - FUN_CONFIG:
-      IGNORED: false
-      NAME: ""
-      TEST_CASES: []
-      STUBS: []
-    STRUCT_NAME: ""
-    PACKAGE: fileprocessor
-  - FUN_CONFIG:
-      IGNORED: false
-      NAME: ""
-      TEST_CASES: []
-      STUBS: []
-    STRUCT_NAME: ""
-    PACKAGE: fileprocessor
-  - FUN_CONFIG:
-      IGNORED: false
-      NAME: ""
-      TEST_CASES: []
-      STUBS: []
-    STRUCT_NAME: ""
-    PACKAGE: fileprocessor
-  - FUN_CONFIG:
-      IGNORED: false
-      NAME: ""
-      TEST_CASES: []
-      STUBS: []
-    STRUCT_NAME: ""
-    PACKAGE: fileprocessor
-  - FUN_CONFIG:
-      IGNORED: false
-      NAME: ""
-      TEST_CASES: []
-      STUBS: []
-    STRUCT_NAME: ""
-    PACKAGE: fileprocessor
-  - FUN_CONFIG:
-      IGNORED: false
-      NAME: FileConfigs.TestConfig
-      TEST_CASES: []
-      STUBS: []
-    STRUCT_NAME: FileConfigs.TestConfig
-    PACKAGE: fileprocessor
-  - FUN_CONFIG:
-      IGNORED: false
-      NAME: Ignored.FileConfig
-      TEST_CASES: []
-      STUBS: []
-    STRUCT_NAME: Ignored.FileConfig
-    PACKAGE: fileprocessor
-  - FUN_CONFIG:
-      IGNORED: false
-      NAME: Ignored.FunConfig
-      TEST_CASES: []
-      STUBS: []
-    STRUCT_NAME: Ignored.FunConfig
-    PACKAGE: fileprocessor
-  - FUN_CONFIG:
-      IGNORED: false
-      NAME: ""
-      TEST_CASES: []
-      STUBS: []
-    STRUCT_NAME: ""
-    PACKAGE: fileprocessor
-  - FUN_CONFIG:
-      IGNORED: false
-      NAME: Name.Param
-      TEST_CASES: []
-      STUBS: []
-    STRUCT_NAME: Name.Param
-    PACKAGE: fileprocessor
-  - FUN_CONFIG:
-      IGNORED: false
-      NAME: Desc.TestCase
-      TEST_CASES: []
-      STUBS: []
-    STRUCT_NAME: Desc.TestCase
-    PACKAGE: fileprocessor
-  - FUN_CONFIG:
-      IGNORED: false
-      NAME: Level.Stub
-      TEST_CASES: []
-      STUBS: []
-    STRUCT_NAME: Level.Stub
-    PACKAGE: fileprocessor
+- PATH: ./web/server/internal/service
+  FILE_NAME: tree.go
+  VAR_STUB_LIST:
+  - NAME: systemConfig
+    VALUE: systemConfig stub value
+  FUNC_STUB_LIST:
+  - STRUCT_NAME: HomeService
+    NAME: GetTree
+    STATEMENT: "{\n\treturn true\n}"
+  FUNCTION_CONFIGS:
+  - STRUCT_NAME: HomeService
+    NAME: GetTree
+    CASES:
+    - DESC: Test case 001
+      ASSERTS:
+      - INPUT:
+          NAME: path
+          TYPE: string
+          VALUE: .
+        WANT:
+          NAME: path
+          TYPE: string
+          VALUE: .
+      - INPUT:
+          NAME: path
+          TYPE: string
+          VALUE: test
+        WANT:
+          NAME: path
+          TYPE: string
+          VALUE: test
+      VAR_STUB_LIST: []
+      FUNC_STUB_LIST: []

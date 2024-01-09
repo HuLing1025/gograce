@@ -18,6 +18,6 @@ func GetCases(c *gin.Context) {
 		return
 	}
 
-	directories, err := service.NewHomeService().GetTree()
+	directories, err := service.NewCaseService().GetTestCases(request)
 	response.Response(c, directories, err)
 }

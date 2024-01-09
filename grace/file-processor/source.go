@@ -1,6 +1,7 @@
 package fileprocessor
 
 import (
+	"bytes"
 	"fmt"
 	"go/ast"
 	"go/parser"
@@ -14,6 +15,9 @@ import (
 type ISourceCodeProcessor interface {
 	GetASTTree(rootPath string) (root *ASTNode, err error)
 	GenerateSourceFile(node *ASTNode) (err error)
+	SearchFuncDecl(node *ast.File, fName string) (ast.Decl, bool)
+	SearchMethodDecl(node *ast.File, sName string, mName string) (ast.Decl, bool)
+	GetStatement(decl ast.Decl) (statement string, err error)
 }
 
 // SourceCodeProcessor source code processor.
@@ -53,7 +57,7 @@ func (s *SourceCodeProcessor) GetASTTree(rootPath string) (root *ASTNode, err er
 	// create a file set.
 	fSet := token.NewFileSet()
 
-	err = dfs(rootPath, root, fSet)
+	err = dfs(rootPath, &root, fSet)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -78,8 +82,55 @@ func (s *SourceCodeProcessor) GenerateSourceFile(node *ASTNode) (err error) {
 	return
 }
 
+// SearchFuncDecl search func declaration.
+func (s *SourceCodeProcessor) SearchFuncDecl(node *ast.File, fName string) (ast.Decl, bool) {
+	for _, decl := range node.Decls {
+		// function.
+		if fn, ok := decl.(*ast.FuncDecl); ok && fn.Recv == nil {
+			return decl, true
+		}
+	}
+
+	return nil, false
+}
+
+// SearchMethodDecl search method declaration.
+func (s *SourceCodeProcessor) SearchMethodDecl(node *ast.File, sName string, mName string) (ast.Decl, bool) {
+	for _, decl := range node.Decls {
+		// method
+		if fn, ok := decl.(*ast.FuncDecl); ok && fn.Recv != nil {
+			return decl, true
+		}
+	}
+
+	return nil, false
+}
+
+// GetStatement get statement.
+func (s *SourceCodeProcessor) GetStatement(decl ast.Decl) (statement string, err error) {
+	printerConfig := &printer.Config{Mode: printer.TabIndent | printer.UseSpaces}
+	buf := bytes.Buffer{}
+
+	fSet := token.NewFileSet()
+	err = printerConfig.Fprint(&buf, fSet, decl)
+	statement = buf.String()
+
+	return
+}
+
 // dfs search all go source files.
-func dfs(rootPath string, astTree *ASTNode, fSet *token.FileSet) (err error) {
+func dfs(rootPath string, astTree **ASTNode, fSet *token.FileSet) (err error) {
+	if strings.HasSuffix(rootPath, ".go") {
+		pathSlice := strings.Split(rootPath, "/")
+		f, _err := parser.ParseFile(fSet, rootPath, nil, 0)
+		if _err != nil {
+			fmt.Println("解析文件失败：", _err)
+			return
+		}
+		*astTree = &ASTNode{FType: SourceFile, FileName: pathSlice[len(pathSlice)-1], RelativePath: strings.Join(pathSlice[:len(pathSlice)-1], "/"), AST: f}
+		return
+	}
+
 	currents, _err := os.ReadDir(rootPath)
 	if _err != nil {
 		err = _err
@@ -88,7 +139,7 @@ func dfs(rootPath string, astTree *ASTNode, fSet *token.FileSet) (err error) {
 
 	for _, file := range currents {
 		if file.IsDir() && !strings.HasPrefix(file.Name(), ".") {
-			var subDir = ASTNode{FType: Directory, RelativePath: rootPath + "/" + file.Name()}
+			var subDir = &ASTNode{FType: Directory, RelativePath: rootPath + "/" + file.Name()}
 
 			err = dfs(rootPath+"/"+file.Name(), &subDir, fSet)
 			if err != nil {
@@ -97,7 +148,7 @@ func dfs(rootPath string, astTree *ASTNode, fSet *token.FileSet) (err error) {
 
 			// not null dir.
 			if len(subDir.Children) != 0 {
-				astTree.Children = append(astTree.Children, &subDir)
+				(*astTree).Children = append((*astTree).Children, subDir)
 			}
 
 			continue
@@ -112,7 +163,7 @@ func dfs(rootPath string, astTree *ASTNode, fSet *token.FileSet) (err error) {
 				return
 			}
 
-			astTree.Children = append(astTree.Children, &ASTNode{FType: SourceFile, FileName: file.Name(), RelativePath: rootPath, AST: f})
+			(*astTree).Children = append((*astTree).Children, &ASTNode{FType: SourceFile, FileName: file.Name(), RelativePath: rootPath, AST: f})
 		}
 	}
 

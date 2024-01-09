@@ -13,6 +13,9 @@ var httpCode = map[string]int{
 	BuildASTError:       10001,
 	SearchASTError:      10002,
 	ReadYAMLConfigError: 10003,
+	SearchFunctionError: 10004,
+	SearchMethodError:   10005,
+	StatementError:      10006,
 
 	// TODO more customer code mapping definitions...
 }
