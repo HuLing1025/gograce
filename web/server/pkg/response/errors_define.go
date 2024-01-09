@@ -17,6 +17,7 @@ const (
 	SearchFunctionError = "search function error"
 	SearchMethodError   = "search method error"
 	StatementError      = "statement error"
+	SyncConfigError     = "sync test config error"
 
 // TODO more customer error definitions...
 )

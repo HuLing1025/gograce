@@ -28,7 +28,8 @@ func NewServer() *gin.Engine {
 	v1 := engine.Group("/v1")
 	{
 		v1.GET("tree", api.GetTree)
-		v1.POST("case", api.GetCases)
+		v1.GET("case", api.GetCases)
+		v1.POST("case", api.AddTestCase)
 	}
 
 	return engine

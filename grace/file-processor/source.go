@@ -2,7 +2,7 @@ package fileprocessor
 
 import (
 	"bytes"
-	"fmt"
+	"errors"
 	"go/ast"
 	"go/parser"
 	"go/printer"
@@ -58,10 +58,6 @@ func (s *SourceCodeProcessor) GetASTTree(rootPath string) (root *ASTNode, err er
 	fSet := token.NewFileSet()
 
 	err = dfs(rootPath, &root, fSet)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
 
 	return
 }
@@ -121,11 +117,14 @@ func (s *SourceCodeProcessor) GetStatement(decl ast.Decl) (statement string, err
 // dfs search all go source files.
 func dfs(rootPath string, astTree **ASTNode, fSet *token.FileSet) (err error) {
 	if strings.HasSuffix(rootPath, ".go") {
+		if _, _err := os.Stat(rootPath); _err != nil {
+			return errors.New("file not found")
+		}
+
 		pathSlice := strings.Split(rootPath, "/")
 		f, _err := parser.ParseFile(fSet, rootPath, nil, 0)
 		if _err != nil {
-			fmt.Println("解析文件失败：", _err)
-			return
+			return _err
 		}
 		*astTree = &ASTNode{FType: SourceFile, FileName: pathSlice[len(pathSlice)-1], RelativePath: strings.Join(pathSlice[:len(pathSlice)-1], "/"), AST: f}
 		return
@@ -133,8 +132,7 @@ func dfs(rootPath string, astTree **ASTNode, fSet *token.FileSet) (err error) {
 
 	currents, _err := os.ReadDir(rootPath)
 	if _err != nil {
-		err = _err
-		return
+		return _err
 	}
 
 	for _, file := range currents {
@@ -159,8 +157,7 @@ func dfs(rootPath string, astTree **ASTNode, fSet *token.FileSet) (err error) {
 
 			f, _err := parser.ParseFile(fSet, rootPath+"/"+file.Name(), nil, 0)
 			if _err != nil {
-				fmt.Println("解析文件失败：", _err)
-				return
+				return _err
 			}
 
 			(*astTree).Children = append((*astTree).Children, &ASTNode{FType: SourceFile, FileName: file.Name(), RelativePath: rootPath, AST: f})

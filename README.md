@@ -35,3 +35,20 @@
 
 ### Provided Commands
 - Refer to - [Commands](./cmd/README.md)
+
+### How To Use
+- Clone this project to your local machine and go into the project directory `gograce/web/client/go-grace`, execute below command to build the vue app.
+    ```sh
+    npm install
+    npm run build 
+    vue build
+    ```
+- Build the backend server by executing below command.
+  ```sh
+  go build -o gograce
+  ```
+- Start the backend server by executing below command.
+  ```sh
+  gograce start
+  ```
+- And then open the browser and visit `localhost:8080` to see the web app.

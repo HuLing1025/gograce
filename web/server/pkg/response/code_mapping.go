@@ -16,6 +16,7 @@ var httpCode = map[string]int{
 	SearchFunctionError: 10004,
 	SearchMethodError:   10005,
 	StatementError:      10006,
+	SyncConfigError:     10007,
 
 	// TODO more customer code mapping definitions...
 }

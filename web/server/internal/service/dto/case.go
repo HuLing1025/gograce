@@ -2,10 +2,10 @@ package dto
 
 // CaseRequest case request.
 type CaseRequest struct {
-	Path       string `json:"path"`
-	FileName   string `json:"file_name"`
-	StructName string `json:"struct_name"`
-	FuncName   string `json:"func_name"`
+	Path       string `json:"path" form:"path" binding:"required"`
+	FileName   string `json:"file_name" form:"file_name" binding:"required"`
+	StructName string `json:"struct_name" form:"struct_name"`
+	FuncName   string `json:"func_name" form:"func_name" binding:"required"`
 }
 
 // CaseResponse case response.
@@ -88,4 +88,15 @@ type FuncConfig struct {
 	StructName string `json:"struct_name" yaml:"STRUCT_NAME"`
 	Name       string `json:"name" yaml:"NAME"`
 	Cases      []Case `json:"cases" yaml:"CASES"`
+}
+
+// -------------------------------- ADD CASE ------------------------------------------------ //
+
+// AddCaseRequestDto add case request.
+type AddCaseRequestDto struct {
+	Path       string `json:"path"`
+	FileName   string `json:"file_name"`
+	StructName string `json:"struct_name"`
+	FuncName   string `json:"func_name"`
+	Case       Case   `json:"case"`
 }

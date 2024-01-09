@@ -1,7 +1,6 @@
 package fileprocessor
 
 import (
-	"fmt"
 	"os"
 
 	"gopkg.in/yaml.v2"
@@ -32,14 +31,12 @@ func (c *YamlFileProcessor) CreateYamlFile(filePath string, input any) (err erro
 
 	yamlFile, err := os.Create(filePath)
 	if err != nil {
-		fmt.Println(err)
 		return
 	}
 	defer yamlFile.Close()
 
 	_, err = yamlFile.Write(configs)
 	if err != nil {
-		fmt.Println(err)
 		return
 	}
 
